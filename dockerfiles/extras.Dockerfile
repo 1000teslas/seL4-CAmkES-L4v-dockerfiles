@@ -30,3 +30,14 @@ RUN git clone git://github.com/Xilinx/qemu.git && cd qemu \
     && ../configure --target-list="aarch64-softmmu,microblazeel-softmmu" --enable-fdt --disable-kvm --disable-xen --enable-gcrypt \
     && make -j4 && make install && cd ../..
 RUN git clone git://github.com/Xilinx/qemu-devicetrees.git && cd qemu-devicetrees && make && cd ..
+RUN VERSION=1.1.0; \
+curl -sSL "https://github.com/facebook/infer/releases/download/v$VERSION/infer-linux64-v$VERSION.tar.xz" \
+| sudo tar -C /opt -xJ && \
+sudo ln -s "/opt/infer-linux64-v$VERSION/bin/infer" /usr/local/bin/infer
+RUN apt-get install -y --no-install-recommends bat fd-find ripgrep less cbmc opam \
+autoconf debianutils graphviz libexpat1-dev libgmp-dev libgnomecanvas2-dev libgtk2.0-dev pkg-config zlib1g-dev libxml2-dev \
+    && ln -s /usr/bin/batcat /usr/bin/bat && ln -s /usr/bin/fdfind /usr/bin/fd
+RUN wget 'http://ftp.au.debian.org/debian/pool/main/g/gtksourceview2/libgtksourceview2.0-dev_2.10.5-3_amd64.deb' \
+'http://ftp.au.debian.org/debian/pool/main/g/gtksourceview2/libgtksourceview2.0-0_2.10.5-3_amd64.deb' \
+'http://ftp.au.debian.org/debian/pool/main/g/gtksourceview2/libgtksourceview2.0-common_2.10.5-3_all.deb' \
+&& sudo dpkg -i libgtksourceview2.0-common_2.10.5-3_all.deb libgtksourceview2.0-0_2.10.5-3_amd64.deb libgtksourceview2.0-dev_2.10.5-3_amd64.deb
